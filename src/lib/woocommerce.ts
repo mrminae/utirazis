@@ -38,25 +38,25 @@ export type StoreProduct = {
 export async function getProducts(): Promise<StoreProduct[]> {
 
 
-if (!user || !password) {
-  throw new Error("Flywheel credentials are missing");
-}
+  if (!user || !password) {
+    throw new Error("Flywheel credentials are missing");
+  }
 
-const authorization = Buffer.from(`${user}:${password}`).toString("base64");
-  
+  const authorization = Buffer.from(`${user}:${password}`).toString("base64");
+
   if (!endpoint) {
     throw new Error("WPGRAPHQL_URL is missing in .env.local");
   }
 
-const response = await fetch(endpoint, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: `Basic ${authorization}`,
-  },
-  body: JSON.stringify({ query: PRODUCTS_QUERY }),
-  cache: "no-store",
-});
+  const response = await fetch(endpoint, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Basic ${authorization}`,
+    },
+    body: JSON.stringify({ query: PRODUCTS_QUERY }),
+    cache: "no-store",
+  });
 
   if (!response.ok) {
     throw new Error(`GraphQL HTTP error: ${response.status}`);
